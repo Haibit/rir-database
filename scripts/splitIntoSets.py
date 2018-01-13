@@ -1,9 +1,10 @@
 import os
 import json
 import argparse
-import numpy as np
 import util
 import re
+
+import numpy as np
 
 ListDir = 'lists'
 

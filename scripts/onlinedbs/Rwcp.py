@@ -1,10 +1,3 @@
-import re
-import os
-from os.path import join
-import numpy as np
-import soundfile as sf
-import util
-
 """
 Name: RWCP Sound Scene Database
 
@@ -21,6 +14,13 @@ Paper:
 }
 """
 
+import re
+import os
+import util
+
+import numpy as np
+import soundfile as sf
+
 # file format for the room impulse responses according to micarray/indexe.htm
 RawFormat = {
 	'format': 'RAW',
@@ -32,18 +32,18 @@ RawFormat = {
 
 def importRirs(downloadDir, insertIntoDbF):
 	url = 'http://www.openslr.org/resources/13/RWCP.tar.gz'
-	filename = join(downloadDir, 'rwcp.tar.gz')
-	unpackDir = join(downloadDir, 'rwcp')
+	filename = os.path.join(downloadDir, 'rwcp.tar.gz')
+	unpackDir = os.path.join(downloadDir, 'rwcp')
 	
 	dl = util.FileDownloader(url, filename)
 	dl.download()
 	dl.unpackTo(unpackDir)
 
 	files = []
-	for root, dirnames, filenames in os.walk(join(unpackDir, 'RWCP/micarray/MICARRAY/data1')):
+	for root, dirnames, filenames in os.walk(os.path.join(unpackDir, 'RWCP/micarray/MICARRAY/data1')):
 		for filename in filenames:
 			if filename[-2:] != '.1': continue # we only use the front microphone
-			files.append(join(root, filename))
+			files.append(os.path.join(root, filename))
 
 	pattern = re.compile('(circle|cirline)\/(\w{3})\/imp(\d{3})')
 

@@ -1,9 +1,3 @@
-import os
-import re
-import util
-import fnmatch
-from os.path import join, split
-
 """
 Name: Acoustic Characterisation of Environments (ACE) Corpus
 
@@ -14,10 +8,15 @@ License: Creative Commons Attribution-NoDerivatives 4.0 International License
 Paper: J. Eaton, A. H. Moore, N. D. Gaubitch, and P. A. Naylor, “The ACE challenge – corpus description and performance evaluation,” Proc. IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (WASPAA) , New Paltz, NY, USA, Oct. 2015
 """
 
+import fnmatch
+import os
+import re
+import util
+
 def importRirs(downloadDir, insertIntoDbF):
 	url = 'http://www.commsp.ee.ic.ac.uk/~sap/uploads/data/ACE/ACE_Corpus_RIRN_Single.tbz2'
-	filename = join(downloadDir, 'ace.tbz2')
-	unpackDir = join(downloadDir, 'ace')
+	filename = os.path.join(downloadDir, 'ace.tbz2')
+	unpackDir = os.path.join(downloadDir, 'ace')
 
 	dl = util.FileDownloader(url, filename)
 	dl.download()
@@ -26,7 +25,7 @@ def importRirs(downloadDir, insertIntoDbF):
 	files = []
 	for root, dirnames, filenames in os.walk(unpackDir):
 		for filename in fnmatch.filter(filenames, '*_RIR.wav'):
-			files.append(join(root, filename))
+			files.append(os.path.join(root, filename))
 
 	bar = util.ConsoleProgressBar()
 	bar.start('Import ACE')

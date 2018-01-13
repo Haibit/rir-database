@@ -1,8 +1,9 @@
 import os
 import sys
 import urllib.request
-import patoolib
 import shutil
+
+import patoolib
 import numpy as np
 from scikits.samplerate import resample
 

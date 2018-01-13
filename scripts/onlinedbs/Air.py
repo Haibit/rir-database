@@ -1,11 +1,3 @@
-import re
-import os
-import util
-from os.path import join
-import numpy as np
-import soundfile as sf
-import scipy.io
-
 """
 Name: Aachen Impulse Response (AIR) Database
 
@@ -22,6 +14,14 @@ Jeub, M., Schäfer, M. und Vary, P.:
  Download der Veröffentlichung Kurzfassung mit ZusatzinformationA Binaural Room Impulse Response Database for the Evaluation of Dereverberation Algorithms,
 in: Proceedings of International Conference on Digital Signal Processing (DSP), (Santorini, Greece), IEEE, Juli 2009, S. 1–4, ISBN: 978-1-42443-298-1.
 """
+
+import re
+import os
+import util
+
+import numpy as np
+import soundfile as sf
+import scipy.io
 
 RirTypes = {
 	'1': 'binaural',
@@ -118,18 +118,18 @@ def loadAirRir(filename):
 
 def importRirs(downloadDir, insertIntoDbF):
 	url = 'https://www2.iks.rwth-aachen.de/air/air_database_release_1_4.zip'
-	filename = join(downloadDir, 'air_1_4.zip')
-	unpackDir = join(downloadDir, 'air_1_4')
+	filename = os.path.join(downloadDir, 'air_1_4.zip')
+	unpackDir = os.path.join(downloadDir, 'air_1_4')
 
 	dl = util.FileDownloader(url, filename)
 	dl.download()
 	dl.unpackTo(unpackDir)
 
 	files = []
-	for root, dirnames, filenames in os.walk(join(unpackDir, 'AIR_1_4')):
+	for root, dirnames, filenames in os.walk(os.path.join(unpackDir, 'AIR_1_4')):
 		for filename in filenames:
 			if os.path.splitext(filename)[1] != '.mat': continue
-			files.append(join(root, filename))
+			files.append(os.path.join(root, filename))
 
 	bar = util.ConsoleProgressBar()
 	bar.start('Import AIR')

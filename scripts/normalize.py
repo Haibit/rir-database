@@ -1,11 +1,12 @@
-from os.path import join, isfile
+import os
 import argparse
 import json
+import shutil
+import util
+
 import numpy as np
 import soundfile as sf
-import shutil
 from scikits.samplerate import resample
-import util
 
 ImportDir = 'wav.imported'
 NormalizeDir = 'wav.normalized'
@@ -19,14 +20,14 @@ def main(dbFilename, targetFs, force=False):
 	bar.start('Normalize RIRs')
 	i = 0
 	for rirId, rir in rirDb.items():
-		targetFilename = join(NormalizeDir, rir['id'] + '.wav')
+		targetFilename = os.path.join(NormalizeDir, rir['id'] + '.wav')
 		if not force:
 			if rir['filename'] == targetFilename and \
 				rir['fs'] == targetFs and \
 				targetFilename:
 				continue
 
-		x, fs_x = sf.read(join(ImportDir, rir['id'] + '.wav'), dtype='float32')
+		x, fs_x = sf.read(os.path.join(ImportDir, rir['id'] + '.wav'), dtype='float32')
 		y, fs_y = x, fs_x
 
 		if fs_y != targetFs:

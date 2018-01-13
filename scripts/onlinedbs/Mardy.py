@@ -1,8 +1,3 @@
-import re
-import util
-from glob import glob
-from os.path import join, basename
-
 """
 Name: Multichannel Acoustic Reverberation Database at York (MARDY) Database
 
@@ -13,6 +8,11 @@ License: ?
 Paper: Jimi YC Wen, Nikolay D Gaubitch, Emanuël AP Habets, Tony Myatt, and Patrick A Naylor. "Evaluation of speech dereverberation algorithms using the MARDY database", 2006
 """
 
+import glob
+import os
+import re
+import util
+
 Positions = {
 	'L': 'left',
 	'C': 'center',
@@ -21,20 +21,20 @@ Positions = {
 
 def importRirs(downloadDir, insertIntoDbF):
 	url = 'http://www.commsp.ee.ic.ac.uk/~sap/uploads/data/MARDY.rar'
-	filename = join(downloadDir, 'mardy.rar')
-	unpackDir = join(downloadDir, 'mardy')
+	filename = os.path.join(downloadDir, 'mardy.rar')
+	unpackDir = os.path.join(downloadDir, 'mardy')
 	
 	dl = util.FileDownloader(url, filename)
 	dl.download()
 	dl.unpackTo(unpackDir)
 
-	fileSelector = join(unpackDir, '*.wav')
-	files = list(glob(fileSelector))
+	fileSelector = os.path.join(unpackDir, '*.wav')
+	files = list(glob.glob(fileSelector))
 
 	bar = util.ConsoleProgressBar()
 	bar.start('Import MARDY')
 	for i, file in enumerate(sorted(files)): # we sort to get same identifiers cross-platform
-		filename = basename(file)
+		filename = os.path.basename(file)
 		m = re.search(r'ir_(\d)_([LCR])_(\d).wav', filename)
 		assert m, 'Could not parse rir info from filename {}'.format(filename)
 		assert m.group(2) in Positions, 'invalid position {}'.format(m.groups(2))

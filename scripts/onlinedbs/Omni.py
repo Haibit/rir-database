@@ -1,7 +1,3 @@
-import util
-from glob import glob
-from os.path import join
-
 """
 Name: Database of Omnidirectional and B-Format Impulse Responses
 
@@ -14,21 +10,25 @@ License: These IRs are released under the Creative Commons Attribution-Noncommer
 Paper: Stewart, Rebecca and Sandler, Mark. "Database of Omnidirectional and B-Format Impulse Responses", in Proc. of IEEE Int. Conf. on Acoustics, Speech, and Signal Processing (ICASSP 2010), Dallas, Texas, March 2010.
 """
 
+import glob
+import os
+import util
+
 OmniRooms = ['greathall', 'octagon', 'classroom']
 
 def importRirs(downloadDir, insertIntoDbF):
 	j = 0
 	for room in OmniRooms:
 		url = 'http://kakapo.dcs.qmul.ac.uk/irs/{}Omni.zip'.format(room)
-		filename = join(downloadDir, 'omni.{}.zip'.format(room))
-		unpackDir = join(downloadDir, 'omni.{}'.format(room))
+		filename = os.path.join(downloadDir, 'omni.{}.zip'.format(room))
+		unpackDir = os.path.join(downloadDir, 'omni.{}'.format(room))
 
 		dl = util.FileDownloader(url, filename)
 		dl.download()
 		dl.unpackTo(unpackDir)
 
-		fileSelector = join(unpackDir, 'Omni', '*.wav')
-		files = list(glob(fileSelector))
+		fileSelector = os.path.join(unpackDir, 'Omni', '*.wav')
+		files = list(glob.glob(fileSelector))
 
 		bar = util.ConsoleProgressBar()
 		bar.start('Import OMNI %s' % room)
